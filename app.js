@@ -200,16 +200,23 @@ function submitAnswer() {
     if (isCorrect) {
         correctAnswers++;
         showFeedback(`✓ Correct! ${current.acronym} stands for "${current.answer}"`, 'correct');
+        updateStats();
+        currentIndex++;
+        
+        // Quick transition for correct answers
+        setTimeout(() => {
+            loadNextAcronym();
+        }, 800);
     } else {
         showFeedback(`✗ Incorrect. ${current.acronym} stands for "${current.answer}"`, 'incorrect');
+        updateStats();
+        currentIndex++;
+        
+        // Longer wait for incorrect answers to read the correct answer
+        setTimeout(() => {
+            loadNextAcronym();
+        }, 2000);
     }
-    
-    updateStats();
-    currentIndex++;
-    
-    setTimeout(() => {
-        loadNextAcronym();
-    }, 2000);
 }
 
 // Skip current acronym
