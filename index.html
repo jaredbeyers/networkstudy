@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network+ Acronym Flashcards</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Network+ Acronym Flashcards</h1>
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-label">Score:</span>
+                    <span id="score">0</span>/<span id="total">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Accuracy:</span>
+                    <span id="accuracy">0%</span>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <div class="flashcard">
+                <div class="acronym-display">
+                    <h2 id="acronym">Click "Start" to begin</h2>
+                </div>
+                
+                <div class="answer-section">
+                    <input 
+                        type="text" 
+                        id="answer-input" 
+                        placeholder="Type what the acronym stands for..."
+                        autocomplete="off"
+                        disabled
+                    >
+                    <button id="submit-btn" disabled>Submit</button>
+                    <button id="skip-btn" disabled>Skip</button>
+                </div>
+
+                <div class="feedback" id="feedback"></div>
+
+                <div class="controls">
+                    <button id="start-btn">Start Quiz</button>
+                    <button id="reset-btn" style="display: none;">Reset</button>
+                </div>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
