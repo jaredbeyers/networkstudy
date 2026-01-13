@@ -186,8 +186,9 @@ function loadNextAcronym() {
 function submitAnswer() {
     const userAnswer = answerInput.value.trim();
     
+    // If no answer provided, treat as skip
     if (!userAnswer) {
-        showFeedback('Please enter an answer!', 'incorrect');
+        skipAcronym();
         return;
     }
     
