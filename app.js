@@ -214,7 +214,13 @@ function submitAnswer() {
 // Skip current acronym
 function skipAcronym() {
     const current = shuffledAcronyms[currentIndex];
-    showFeedback(`Skipped. ${current.acronym} stands for "${current.answer}"`, 'info');
+    
+    // Count skip as incorrect
+    totalAnswered++;
+    // correctAnswers is not incremented, so it counts as incorrect
+    
+    showFeedback(`✗ Skipped (marked incorrect). ${current.acronym} stands for "${current.answer}"`, 'incorrect');
+    updateStats();
     currentIndex++;
     
     setTimeout(() => {
