@@ -99,6 +99,8 @@ let shuffledAcronyms = [];
 let score = 0;
 let totalAnswered = 0;
 let correctAnswers = 0;
+let waitingForCorrection = false;
+let correctionAnswer = '';
 
 // DOM elements
 const acronymElement = document.getElementById('acronym');
@@ -179,12 +181,32 @@ function loadNextAcronym() {
     answerInput.value = '';
     answerInput.focus();
     feedbackElement.className = 'feedback';
+    submitBtn.textContent = 'Submit';
+    skipBtn.disabled = false;
+    waitingForCorrection = false;
+    correctionAnswer = '';
     updateStats();
 }
 
 // Submit answer
 function submitAnswer() {
     const userAnswer = answerInput.value.trim();
+    
+    // If we're waiting for correction, check if they typed the correct answer
+    if (waitingForCorrection) {
+        if (checkAnswer(userAnswer, correctionAnswer)) {
+            // They typed the correct answer, move forward
+            waitingForCorrection = false;
+            correctionAnswer = '';
+            answerInput.value = '';
+            submitBtn.textContent = 'Submit';
+            skipBtn.disabled = false;
+            loadNextAcronym();
+        } else {
+            showFeedback(`Please type the correct answer: "${correctionAnswer}"`, 'incorrect');
+        }
+        return;
+    }
     
     // If no answer provided, treat as skip
     if (!userAnswer) {
@@ -208,14 +230,16 @@ function submitAnswer() {
             loadNextAcronym();
         }, 800);
     } else {
-        showFeedback(`✗ Incorrect. ${current.acronym} stands for "${current.answer}"`, 'incorrect');
+        // Incorrect answer - require them to type the correct answer
+        showFeedback(`✗ Incorrect. Please type: "${current.answer}"`, 'incorrect');
         updateStats();
+        waitingForCorrection = true;
+        correctionAnswer = current.answer;
+        answerInput.value = '';
+        answerInput.focus();
+        submitBtn.textContent = 'Continue';
+        skipBtn.disabled = true;
         currentIndex++;
-        
-        // Longer wait for incorrect answers to read the correct answer
-        setTimeout(() => {
-            loadNextAcronym();
-        }, 2000);
     }
 }
 
@@ -227,13 +251,16 @@ function skipAcronym() {
     totalAnswered++;
     // correctAnswers is not incremented, so it counts as incorrect
     
-    showFeedback(`✗ Skipped (marked incorrect). ${current.acronym} stands for "${current.answer}"`, 'incorrect');
+    // Require them to type the correct answer
+    showFeedback(`✗ Skipped (marked incorrect). Please type: "${current.answer}"`, 'incorrect');
     updateStats();
+    waitingForCorrection = true;
+    correctionAnswer = current.answer;
+    answerInput.value = '';
+    answerInput.focus();
+    submitBtn.textContent = 'Continue';
+    skipBtn.disabled = true;
     currentIndex++;
-    
-    setTimeout(() => {
-        loadNextAcronym();
-    }, 2000);
 }
 
 // Start quiz
